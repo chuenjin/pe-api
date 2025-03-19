@@ -17,31 +17,31 @@ class WeatherStation(WeatherStationBase, table=True):
 
 class MeasurementBase(SQLModel):
     timestamp: datetime = Field(index=True)
-    weatherstation_id: int | None = Field(default=None, foreign_key="weatherstation.id")
-    
+        
 class Measurement(MeasurementBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    weatherstation_id: int | None = Field(default=None, foreign_key="weatherstation.id")
     weatherstation: WeatherStation | None = Relationship(back_populates="measurements")
     datapoints: list["DataPoint"] = Relationship(back_populates="measurement")
 
 class VariableBase(SQLModel):
-    weatherstation_id: int | None = Field(default=None, foreign_key="weatherstation.id")
-    name: str
     unit: str
     long_name: str
     
 class Variable(VariableBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    weatherstation_id: int | None = Field(default=None, foreign_key="weatherstation.id")
+    name: str
     datapoints: list["DataPoint"] = Relationship(back_populates="variable")
 
 class DataPointBase(SQLModel):
     value: Decimal
-    measurement_id: int | None = Field(default=None, foreign_key="measurement.id")
-    variable_id: int | None = Field(default=None, foreign_key="variable.id")
     
 class DataPoint(DataPointBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    measurement_id: int | None = Field(default=None, foreign_key="measurement.id")
     measurement: Measurement | None = Relationship(back_populates="datapoints")
+    variable_id: int | None = Field(default=None, foreign_key="variable.id")
     variable: Variable | None = Relationship(back_populates="datapoints")
 
 # public models    
