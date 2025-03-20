@@ -35,7 +35,7 @@ class Variable(VariableBase, table=True):
     datapoints: list["DataPoint"] = Relationship(back_populates="variable")
 
 class DataPointBase(SQLModel):
-    value: Decimal
+    value: str
     
 class DataPoint(DataPointBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
